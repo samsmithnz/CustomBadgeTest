@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create json artifact
+        run: |
+          cat >./badge.json <<EOF
+          {
+            label: 'build',  // (Optional) Badge label
+            message: 'passed',  // (Required) Badge message
+            labelColor: '#555',  // (Optional) Label color
+            color: '#4c1',  // (Optional) Message color
+            style: 'flat' // (Optional) One of: 'plastic', 'flat', 'flat-square', 'for-the-badge' or 'social'
+          }
+          EOF
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-badge
+          path: ./badge.json
